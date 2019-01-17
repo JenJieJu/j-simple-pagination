@@ -49,7 +49,7 @@
         var pageTotal = 301;
         var pageCount = 5;
 
-        var Pagination = new window.jPagination('#time', {
+        var Pagination = new window.jSimplePagination('#time', {
             pageSize: pageSize,
             pageTotal: pageTotal,
             pageIndex: pageIndex,
