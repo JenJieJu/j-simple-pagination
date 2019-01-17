@@ -37,5 +37,13 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JenJieJu/j-simple-pagination.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JenJieJu/j-simple-pagination/issues"
+  },
+  "homepage": "https://github.com/JenJieJu/j-simple-pagination#readme"
 }
