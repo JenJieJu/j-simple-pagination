@@ -33,22 +33,22 @@ export default window.jSimplePagination = class jSimplePagination {
     init() {
 
 
-        const { onChange, pageSize = 0, pageIndex = 1, pageTotal = 0, pageCount = 5 } = this.config;
+        const { onChange, pageSize = 0, pageIndex = 1, dataTotal = 0, showCount = 5 } = this.config;
 
         this.pageSize = pageSize;
         this.pageIndex = pageIndex;
-        this.pageTotal = pageTotal;
-        this.pageCount = pageCount;
+        this.dataTotal = dataTotal;
+        this.showCount = showCount;
 
         watcher(this, (k, n, o) => {
-            if (k == 'pageSize' || k == 'pageIndex' || k == 'pageTotal' || k == 'pageCount') {
+            if (k == 'pageSize' || k == 'pageIndex' || k == 'dataTotal' || k == 'showCount') {
                 this.render();
             }
             isFunction(onChange) && onChange.call(this, {
                 pageSize: this.pageSize,
                 pageIndex: this.pageIndex,
-                pageTotal: this.pageTotal,
-                pageCount: this.pageCount,
+                dataTotal: this.dataTotal,
+                showCount: this.showCount,
             })
         })
 
@@ -57,16 +57,16 @@ export default window.jSimplePagination = class jSimplePagination {
     }
     getConfig() {
 
-        const { pageSize, pageIndex, pageTotal, pageCount } = this;
+        const { pageSize, pageIndex, dataTotal, showCount } = this;
 
-        const pageNumber = Math.floor(pageTotal / pageSize);
+        const pageCount = Math.ceil(dataTotal / pageSize);
 
         return {
             pageSize,
-            pageIndex,
-            pageTotal,
-            pageNumber,
-            pageCount
+            pageIndex: pageIndex < pageCount ? pageIndex : pageCount,
+            dataTotal,
+            pageCount,
+            showCount: showCount < pageCount ? showCount : pageCount
         }
     }
     setSize(size) {
@@ -89,9 +89,9 @@ export default window.jSimplePagination = class jSimplePagination {
         const {
             pageSize,
             pageIndex,
-            pageTotal,
-            pageNumber,
-            pageCount
+            dataTotal,
+            pageCount,
+            showCount
         } = this.getConfig();
 
 
@@ -99,8 +99,8 @@ export default window.jSimplePagination = class jSimplePagination {
 
         renderHtml(container, [{
             html: `<div class="jSimplePagination-left">
-            					共 ${pageTotal} 条
-            			</div>`,
+                                共 ${dataTotal} 条
+                        </div>`,
         }, {
             html: '<div class="jSimplePagination-right"></div>',
             child: [{
@@ -117,17 +117,17 @@ export default window.jSimplePagination = class jSimplePagination {
                 html: `<ul class="jSimplePagination-pages"></ul>`,
                 child: (() => {
 
-                    const stepNbr = pageCount / 2;
+                    const stepNbr = showCount / 2;
 
                     let pageBts = [],
-                        startIndex = Math.ceil(pageIndex - stepNbr),
-                        endIndex = Math.floor(pageIndex + stepNbr);
+                        startIndex = Math.ceil(pageIndex - stepNbr) + 1,
+                        endIndex = Math.ceil(pageIndex + stepNbr);
 
                     function renderLi(text, i, type = 'push') {
                         pageBts[type]({
                             html: `<li class="jSimplePagination-button ${pageIndex==i?'jSimplePagination-active':''} ${text=='pre'?'jSimplePagination-preMore':''} ${text=='next'?'jSimplePagination-nextMore':''}">
-                            					${text!='next'&&text!='pre'?text:`<i class="icon-gengduo iconfont"></i><i class="iconfont j-hover ${text=='next'?'icon-zuoshuangjiantou':'icon-youshuangjiantou'}"></i>`}
-                            			</li>`,
+                                                ${text!='next'&&text!='pre'?text:`<i class="icon-gengduo iconfont"></i><i class="iconfont j-hover ${text=='next'?'icon-zuoshuangjiantou':'icon-youshuangjiantou'}"></i>`}
+                                        </li>`,
                             events: [{
                                 type: 'click',
                                 event: function() {
@@ -142,14 +142,14 @@ export default window.jSimplePagination = class jSimplePagination {
 
                     if (startIndex <= 0) {
                         startIndex = 1;
-                        endIndex = pageCount;
+                        endIndex = showCount;
                     }
 
 
 
-                    if (endIndex > pageNumber || endIndex < pageCount) {
-                        endIndex = pageNumber;
-                        startIndex = endIndex - pageCount + 1;
+                    if (endIndex > pageCount || endIndex < showCount) {
+                        endIndex = pageCount;
+                        startIndex = endIndex - showCount + 1;
                     }
 
 
@@ -158,16 +158,16 @@ export default window.jSimplePagination = class jSimplePagination {
                     };
 
 
-                    if (endIndex < pageNumber - 1) {
+                    if (endIndex < pageCount - 1) {
                         let nextPageIndex = Math.floor(endIndex + stepNbr / 2);
-                        if (nextPageIndex > pageNumber) {
-                            nextPageIndex = pageNumber;
+                        if (nextPageIndex > pageCount) {
+                            nextPageIndex = pageCount;
                         }
                         renderLi('pre', nextPageIndex)
                     }
 
-                    if (endIndex + 1 <= pageNumber) {
-                        renderLi(pageNumber, pageNumber)
+                    if (endIndex + 1 <= pageCount) {
+                        renderLi(pageCount, pageCount)
                     }
 
                     if (startIndex > 1 + 1) {
@@ -187,11 +187,11 @@ export default window.jSimplePagination = class jSimplePagination {
 
                 })()
             }, {
-                html: `<span class="jSimplePagination-button jSimplePagination-button" ${pageIndex == pageNumber?'desabled':''}><i class="icon-youjiantou iconfont"></i></span>`,
+                html: `<span class="jSimplePagination-button jSimplePagination-button" ${pageIndex == pageCount?'desabled':''}><i class="icon-youjiantou iconfont"></i></span>`,
                 events: [{
                     type: 'click',
                     event() {
-                        if (self.pageIndex != pageNumber) {
+                        if (self.pageIndex != pageCount) {
                             self.pageIndex++;
                         }
                     }

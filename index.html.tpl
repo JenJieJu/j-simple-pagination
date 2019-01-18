@@ -46,14 +46,14 @@
 
         var pageIndex = 7;
         var pageSize = 10;
-        var pageTotal = 301;
-        var pageCount = 5;
+        var dataTotal = 601;
+        var showCount = 10;
 
         var Pagination = new window.jSimplePagination('#time', {
             pageSize: pageSize,
-            pageTotal: pageTotal,
+            dataTotal: dataTotal,
             pageIndex: pageIndex,
-            pageCount: pageCount,
+            showCount: showCount,
             onChange: function(data) {
                 console.log(data);
                 log.innerHTML = '<div>' + JSON.stringify(data) + '</div>';
@@ -63,9 +63,9 @@
 
         log.innerHTML = '<div>' + JSON.stringify({
             pageSize: pageSize,
-            pageTotal: pageTotal,
+            dataTotal: dataTotal,
             pageIndex: pageIndex,
-            pageCount: pageCount,
+            showCount: showCount,
         }) + '</div>'
 
 

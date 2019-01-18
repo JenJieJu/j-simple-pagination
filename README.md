@@ -22,9 +22,9 @@
 <script type="text/javascript">
     var Pagination = new window.jSimplePagination('#time', {
         pageSize: pageSize,
-        pageTotal: pageTotal,
+        dataTotal: dataTotal,
         pageIndex: pageIndex,
-        pageCount: pageCount,
+        showCount: showCount,
         onChange: function(data) {
             console.log(data);
             log.innerHTML = '<div>' + JSON.stringify(data) + '</div>';
@@ -36,4 +36,7 @@
 ## Updata
 ```
 0.0.1 add
+0.0.2 fix:bug change:字段名称
+0.0.3 fix:bug
+0.0.4 fix:bug
 ```

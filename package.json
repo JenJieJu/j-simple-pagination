@@ -1,6 +1,6 @@
 {
   "name": "j-simple-pagination",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "纯js翻页组件",
   "main": "j-simple-pagination",
   "scripts": {
