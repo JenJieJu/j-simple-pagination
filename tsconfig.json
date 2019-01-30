@@ -1,7 +1,7 @@
 {
     "include": [
-        "src/*",
-        "src/**/*"
+        "src/*.ts",
+        "src/**/*.ts"
     ],
     "extends": "./node_modules/j-webpack/tsconfig",
 }
